@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#17365d">
+  <title>Es Pisang Ijo POS</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="top">
+    <div><div class="eyebrow">SALES MANAGEMENT</div><h1>Es Pisang Ijo POS</h1></div>
+    <button id="installBtn" class="secondary hidden">Install app</button>
+  </header>
+
+  <section id="setupPanel" class="panel">
+    <h2>Connect your shared sales database</h2>
+    <p class="muted">Add your Supabase project URL and public anon key. Both phones must use the same project.</p>
+    <label>Supabase Project URL<input id="supabaseUrl" placeholder="https://your-project.supabase.co"></label>
+    <label>Supabase Anon / Publishable Key<input id="supabaseKey" placeholder="eyJ..."></label>
+    <div class="actions"><button id="saveConfig">Save connection</button><button id="clearConfig" class="secondary">Clear</button></div>
+    <p class="tiny">Do not enter a service_role or secret key here. Use only the public anon/publishable key.</p>
+  </section>
+
+  <section id="authPanel" class="panel hidden">
+    <h2>Sign in</h2>
+    <label>Email<input id="email" type="email" autocomplete="username" placeholder="you@example.com"></label>
+    <label>Password<input id="password" type="password" autocomplete="current-password" placeholder="Password"></label>
+    <div class="actions"><button id="signIn">Sign in</button><button id="signOut" class="secondary hidden">Sign out</button></div>
+    <p id="authStatus" class="muted"></p>
+  </section>
+
+  <main id="app" class="hidden">
+    <section class="stats">
+      <article class="stat"><span>Today's sales</span><strong id="todaySales">RM0.00</strong></article>
+      <article class="stat"><span>Today's units</span><strong id="todayUnits">0</strong></article>
+      <article class="stat"><span>Cash</span><strong id="todayCash">RM0.00</strong></article>
+      <article class="stat"><span>QR</span><strong id="todayQr">RM0.00</strong></article>
+    </section>
+
+    <section class="panel">
+      <h2>New transaction</h2>
+      <div class="menu-grid">
+        <button class="menu" data-menu="Original"><b>Original</b><span>RM10</span></button>
+        <button class="menu" data-menu="Mix"><b>Mix</b><span>RM12</span></button>
+        <button class="menu" data-menu="Special"><b>Special</b><span>RM15</span></button>
+        <button class="menu" data-menu="Extra Special"><b>Extra Special</b><span>RM18</span></button>
+      </div>
+      <div class="selected" id="selectedMenu">Select a menu above</div>
+      <div class="form-grid">
+        <label>Quantity<input id="quantity" type="number" min="1" step="1" value="1"></label>
+        <label>Payment type<select id="payment"><option value="cash">Cash</option><option value="qr">QR</option></select></label>
+      </div>
+      <label>Order note (optional)<input id="note" placeholder="e.g. takeaway / customer note"></label>
+      <div class="total-line"><span>Order total</span><strong id="orderTotal">RM0.00</strong></div>
+      <button id="saveSale" class="full">Save transaction</button>
+      <p id="saleStatus" class="muted"></p>
+    </section>
+
+    <section class="panel">
+      <div class="section-head"><h2>Today's menu breakdown</h2><button id="refresh" class="secondary">Refresh</button></div>
+      <div id="breakdown" class="table-wrap"></div>
+    </section>
+
+    <section class="panel">
+      <div class="section-head"><h2>Recent transactions</h2><button id="exportCsv" class="secondary">Export CSV</button></div>
+      <div id="transactions" class="table-wrap"></div>
+    </section>
+    <p class="tiny center">Shared cloud records • Sign in on both phones using the two authorised accounts.</p>
+  </main>
+  <div id="toast" role="status"></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="app.js"></script>
+</body>
+</html>
